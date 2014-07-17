@@ -139,23 +139,39 @@ describe('Pet', function(){
 
 		});
 	});
-	describe('#ressurect', function() {
-		it('should ressurect the pet', function() {
+	describe('#resurrect', function() {
+		it('should resurrect the pet', function() {
 			var fluffy = new Pet('fluffy', 3, 'female', 'lizard');
 			fluffy.isZombie = true;
 			fluffy.wins = 8;
 
-			fluffy.ressurect();
+			fluffy.resurrect();
 
 			expect(fluffy.isZombie).to.be.false;
 			expect(fluffy.wins).to.equal(3);
 			expect(fluffy.health).to.be.within(25, 50);
 		});
-		it('should not ressurect the pet', function() {
+		it('should not resurrect the pet', function() {
+			//Is a zombie, but not enough wins
+			var fluffy = new Pet('fluffy', 3, 'female', 'lizard');
+			fluffy.wins = 4;
+			fluffy.isZombie = true;
 
-		});		
+			fluffy.resurrect();
+
+			//Is not a zombie, therefore cannot resurrect
+			var dax = new Pet('dax', 7, 'female', 'slug');
+			dax.resurrect();
+			dax.wins = 10;
+
+			console.log(fluffy.isZombie);
+
+			expect(fluffy.isZombie).to.be.true;
+			expect(fluffy.wins).to.equal(4);
+			expect(dax.wins).to.equal(10);
+
+		});	
 	});
 });
 
 
-//add 
