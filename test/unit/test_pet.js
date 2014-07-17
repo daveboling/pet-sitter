@@ -3,7 +3,7 @@
 
 'use strict';
 var expect = require('chai').expect;
-var Pet = require('../../apps/models/pet'); //bring in for testing
+var Pet = require('./models/pet'); //bring in for testing
 
 //these are known as describe blocks, a way to organize tests
 describe('Pet', function(){
@@ -23,6 +23,7 @@ describe('Pet', function(){
 			expect(pet.gender).to.equal('female');
 			expect(pet.species).to.equal('lizard');
 			expect(pet.isZombie).to.be.false;
+			expect(pet.wins).to.equal(0);
 			//Heal, energy, full test
 			expect(pet.health).to.within(10, 100);
 			expect(pet.energy).to.within(10, 100);
@@ -120,7 +121,41 @@ describe('Pet', function(){
 			}
 
 			expect(dax.isZombie).to.be.true;
+			expect(fluffy.wins).to.equal(1);
+
+		});
+		it('should should allow a zombie pet to attack', function() {
+			var fluffy = new Pet('fluffy', 3, 'female', 'lizard');
+			fluffy.health = 50;
+
+			//Zombie Dax
+			var dax = new Pet('dax', 7, 'female', 'slug');
+			dax.isZombie = true;
+
+			dax.attack(fluffy);
+
+			expect(fluffy.health).to.be.within(45, 50);
+			expect(fluffy.isZombie).to.be.false;
 
 		});
 	});
+	describe('#ressurect', function() {
+		it('should ressurect the pet', function() {
+			var fluffy = new Pet('fluffy', 3, 'female', 'lizard');
+			fluffy.isZombie = true;
+			fluffy.wins = 8;
+
+			fluffy.ressurect();
+
+			expect(fluffy.isZombie).to.be.false;
+			expect(fluffy.wins).to.equal(3);
+			expect(fluffy.health).to.be.within(25, 50);
+		});
+		it('should not ressurect the pet', function() {
+
+		});		
+	});
 });
+
+
+//add 

@@ -3,7 +3,9 @@ function Pet(name, age, gender, species){
 	this.age     = age;
 	this.gender  = gender;
 	this.species = species;
-	this.isZombie  = false;
+
+	this.isZombie= false;
+	this.wins 	 = 0;
 
 	this.health = Math.floor(Math.random()*91+10);
 	this.energy = Math.floor(Math.random()*91+10);
@@ -29,14 +31,27 @@ Pet.prototype.eat = function() {
 }
 
 Pet.prototype.attack = function(Pet) {
-	var damage = Math.floor((this.health/10) + (this.energy/20) + (this.full/30));
-		damage += Math.random()*5;
-	Pet.health -= damage;
+	var damage = (Math.random()*5);
 
-	if(Pet.health < 0){
+	if(!this.isZombie){
+	    damage = Math.floor((this.health/10) + (this.energy/20) + (this.full/30) + (Math.random()*5));;
+	}
+	Pet.health -= Math.floor(damage);
+
+
+	if((Pet.health < 0) && !Pet.isZombie){
 		Pet.isZombie = true;
+		this.wins++;
 	}
 };
 
+Pet.prototype.ressurect = function(){
+	if(this.isZombie && this.wins >= 5){
+		this.health    = 0; //If it's a zombie, then it shouldn't have any health
+		this.wins     -= 5;
+		this.isZombie  = false;
+		this.health   += Math.floor(Math.random() * 26) + 25;
+	}
+}
 
 module.exports = Pet;
